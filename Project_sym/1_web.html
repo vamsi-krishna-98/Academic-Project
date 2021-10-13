@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body
+{
+background-image: url("/static/bck_image.JPG");
+background-repeat: no-repeat;
+background-size: 1390px 670px;
+overflow: hidden;
+}
+
+.myCanvas{
+    width: 206px;
+    height: 104px;
+}
+
+.color1
+{
+ width: 40%;
+ margin-left: 29%;
+ margin-top: 30px;
+ height:50px;
+ border-style=solid;
+ border-radius:15px;
+ background-image : linear-gradient(to bottom right,#F16812,#FCF9F6);
+}
+
+.color2
+{
+width: 40%;
+margin-left: 29%;
+  height:125px;
+  border-radius:15px;
+  background-image : linear-gradient(to bottom right,#F16812,#FCF9F6);
+}
+
+button
+{
+width: 48%;
+height:42%;
+font-size:16px;
+border-radius:15px;
+background-image : linear-gradient(to bottom right,#F16812,#FCF9F6);
+}
+
+
+
+.s1
+{
+  width: 120px ;
+  height: 50px ;
+  border-radius:15px ;
+  margin-left: 12%;
+  background-image : linear-gradient(to bottom right,#F16812,#FCF9F6);
+}
+   
+.s2
+{
+ width: 120px ;
+ height: 50px ;
+ border-radius:15px ;
+ margin-left: 17%;
+ background-image : linear-gradient(to bottom left,#F16812,#FCF9F6);
+}
+ 
+canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 567px;
+    margin-top: 20px;
+    margin-right: auto;
+    background-image: url("/static/can_image.png");
+    background-repeat: no-repeat;
+    display: block;
+}
+p.six {
+  border-style: double;
+  border-width: thick;
+  }
+div.relative {
+  position: relative;
+width: 300px;
+  height: 100px;
+left:37%;
+}
+div.absolute1{
+  position: absolute;
+  top:0;
+  right:100;
+  width: 150px;
+  height: 100px;
+}
+div.absolute2{
+  position: absolute;
+  top:0;
+  left:100;
+ right:0;
+  width: 150px;
+  height: 100px;
+}
+.relative1 {
+  position: relative;
+width: 400px;
+  height: 120px;
+margin-top:0.5%;
+left:35%;
+
+}
+</style>
+</head>
+<body onload="init()" style="background-image: url('/static/bck_image.JPG')">
+>
+
+
+<div class="color1">
+<p class="six" id="p1" style="text-align: center;margin-top: 30px;font-size: 34px;"><b>Please verify that you are human</b> </p>
+</div>
+<div class="color2">
+<p id="p2" style="text-align: center;margin-top: 10px;font-size: 30px;"> Write the given two symbols in the each white box provided below :</p>
+</div>
+<div class="relative">
+<div class="absolute1">
+<p class = "s1" id="s1" style="text-align: center; font-size: 45px">{{a}} </p>
+</div>
+<div class="absolute2">
+<p class = "s2" id= "s2" style="text-align: center; font-size: 45px;">{{b}} </p>
+</div>
+</div>
+<canvas id="myCanvas"  width="206px" height="104px" style="border:1px solid #000000;background-image: url('/static/can_image.png');">
+</canvas>
+<div class="relative1">
+<button onclick="download()"> Download </button>
+<button onclick="erase()"> Clear </button>
+
+
+<form action="/my-link/">
+           
+          <button style="position:absolute;top:50%;left:25%">Verify </button>
+
+        </form>
+
+</div>
+<script type="text/javascript">
+<!--var min=0;
+
+
+var canvas, ctx, flag = false,
+        prevX = 0,
+        currX = 0,
+        prevY = 0,
+        currY = 0,
+        dot_flag = false;
+
+    var x = "white",
+        y = 6 ;
+   
+    function init() {
+        canvas = document.getElementById('myCanvas');
+        ctx = canvas.getContext("2d");
+        w = canvas.width;
+        h = canvas.height;
+   
+        canvas.addEventListener("mousemove", function (e) {
+            findxy('move', e)
+        }, false);
+        canvas.addEventListener("mousedown", function (e) {
+            findxy('down', e)
+        }, false);
+        canvas.addEventListener("mouseup", function (e) {
+            findxy('up', e)
+        }, false);
+        canvas.addEventListener("mouseout", function (e) {
+            findxy('out', e)
+        }, false);
+    }
+    function color(obj) {
+        switch (obj.id) {
+            case "white":
+                x = "white";
+                break;
+            }
+       }
+
+    function draw() {
+        ctx.beginPath();
+        ctx.moveTo(prevX, prevY);
+        ctx.lineTo(currX, currY);
+        ctx.strokeStyle = x;
+        ctx.lineWidth = y;
+        ctx.stroke();
+        ctx.closePath();
+    }
+   
+    function erase() {
+        var m = confirm("Want to clear");
+        if (m) {
+            ctx.clearRect(0, 0, w, h);
+            document.getElementById("canvasimg").style.display = "none";
+        }
+    }
+   
+    function download() {
+  var canvas = document.getElementById("myCanvas");
+  image = canvas.toDataURL("image/jpeg");
+  var link = document.createElement('a');
+  link.download = "1_.jpeg";
+  link.href = image;
+  link.click();
+
+    }
+   
+    function findxy(res, e) {
+        if (res == 'down') {
+            prevX = currX;
+            prevY = currY;
+            currX = e.clientX - canvas.offsetLeft;
+            currY = e.clientY - canvas.offsetTop;
+   
+            flag = true;
+            dot_flag = true;
+            if (dot_flag) {
+                ctx.beginPath();
+                ctx.fillStyle = x;
+                ctx.fillRect(currX, currY, 2, 2);
+                ctx.closePath();
+                dot_flag = false;
+            }
+        }
+        if (res == 'up' || res == "out") {
+            flag = false;
+        }
+        if (res == 'move') {
+            if (flag) {
+                prevX = currX;
+                prevY = currY;
+                currX = e.clientX - canvas.offsetLeft;
+                currY = e.clientY - canvas.offsetTop;
+                draw();
+            }
+        }
+    }
+</script>
+</body>
+</html>
